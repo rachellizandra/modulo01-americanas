@@ -1,18 +1,20 @@
 package ProjetoFinal;
 
+import java.util.Scanner;
+
 public class JogoDaVelha {
 
     public static void main(String[] args) {
 
         /**
-         * colocar dentro do while
+         * colocar dentro do while 
          * saber a vez de cada jogador - ok
-         * fazer joagada
-         * ver se a jogada é valida
-         *  por posição exiteste
-         *  posição vazia
+         * fazer joagada - ok
+         * ver se a jogada é valida - ok
+         * por posição exitente - ok
+         * posição vazia - ok
          * ver se o jogo acabou
-         *  ver se deu velha
+         * ver se deu velha
          *  ver se alguem ganhou
          *      ver na linhas
          *      ver nas colunas
@@ -28,13 +30,26 @@ public class JogoDaVelha {
 
         Character[][] tab = new Character[3][3];
 
+
         Jogo jogo = new Jogo();
-        int[] posicaoArray = {1,2};
-        boolean testeVerificarVazio = verificarPosicaoVazia(tab, posicaoArray);
+        int linha;
+        int coluna;
+
+        Scanner scanner = new Scanner(System.in);
+        linha = scanner.nextInt();
+        coluna = scanner.nextInt();
+        boolean testeVerificarVazio = verificarPosicaoVazia(tab, linha, coluna);
 
         imprimirTabuleiro(tab);
-        jogo.getJogadorAtual();
+        if(fazerJogada(tab, linha, coluna, jogo.getJogadorAtual()) == true) {
+            jogo.mudarJogador();
+        } else {
+            System.out.println("Jogada inválida! Jogue novamente");
+        }
+        fazerJogada(tab, linha, coluna, jogo.getJogadorAtual());
         System.out.println(testeVerificarVazio);
+        imprimirTabuleiro(tab);
+
 
     }
 
@@ -61,11 +76,11 @@ public class JogoDaVelha {
         }
     }
 
-    public static boolean verificarPosicaoVazia(Character[][] tab, int[] posicao) {
+    public static boolean verificarPosicaoVazia(Character[][] tab, int linha, int coluna) {
 
-            if(posicao[0] >= 0 && posicao[0] < 3) {
-                if(posicao[1] >=0 && posicao[1] < 3) {
-                    if(tab[posicao[0]][posicao[1]] == null) {
+            if(linha >= 0 && linha < 3) {
+                if(coluna >=0 && coluna < 3) {
+                    if(tab[linha][coluna] == null) {
                         return true;
                     }
                 }
@@ -73,10 +88,13 @@ public class JogoDaVelha {
         return false;
     }
 
-    public static void fazerJogada(Character[][] tab) {
-
+    public static boolean fazerJogada(Character[][] tab, int linha, int coluna, Character jogadorAtual) {
+        if(verificarPosicaoVazia(tab, linha, coluna) == true) {
+            tab[linha][coluna] = jogadorAtual;
+            return true;
+        }
+        return false;
     }
-
 }
 
 class Jogo {
@@ -86,7 +104,7 @@ class Jogo {
     Character jogadorAtual = jogador1;
 
     // usar o jogador atual pelo scanner ("quem vai começar o jogo?")
-    public void JogadorDaVez() {
+    public void mudarJogador() {
         if(jogadorAtual == jogador1) {
             jogadorAtual = jogador2;
         } else {
