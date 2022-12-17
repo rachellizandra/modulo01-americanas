@@ -1,4 +1,7 @@
+package Aulas;
+
 import java.util.Scanner;
+import java.util.Arrays;
 
 public class Aula06 {
 
