@@ -1,6 +1,4 @@
-package matrizes;
-
-import java.sql.SQLOutput;
+package exercicios;
 
 public class ExercicioMatriz {
 
@@ -10,6 +8,16 @@ public class ExercicioMatriz {
         mat[0][0] = 'X';
 
         imprimir(mat);
+
+        moverParaDireita(mat);
+        moverParaDireita(mat);
+        moverParaDireita(mat);
+
+        imprimir(mat);
+
+        // [_, _, _]
+        // [X, _, _]
+        // [_, _, _]
 
     }
 
@@ -29,7 +37,9 @@ public class ExercicioMatriz {
                     System.out.print(elemento);
                 }
                 //se o indice da coluna for igual a linha
-                if(indiceColuna == linha.length-1){
+                int ultimaPosicaoColuna = linha.length-1;
+
+                if(indiceColuna == ultimaPosicaoColuna) {
                     System.out.print(" ]");
                 }else{
                     System.out.print(" , ");
@@ -38,33 +48,41 @@ public class ExercicioMatriz {
             System.out.println();
         }
     }
-    public static void mover(Character[][] mat){
 
-        int swapCount= 1;
+    public static void moverParaDireita(Character[][] mat){
+        int[] posicao = encontrar(mat);
 
-        while (swapCount > 0) {
+        int linha = posicao[0];
+        int coluna = posicao[1];
 
-            swapCount = 0;
-            for (int col = 0; col < mat[0].length; col++) {
-                for (int row = 0; row < mat.length; row++) {
-                    if (mat[row][col] == 0) {
-                        if( ((row-1) >= 0) && (mat[row-1][col] != 0)) {
-                            //do swap
-                            mat[row][col] = mat[row-1][col];
-                            mat[row-1][col]= 0;
-                            swapCount++;
-                        }
-                    }
-                }
-            }
+        // quando o X chegar no final da ultima linha, mover para coluna abaixo
+        if(coluna == mat[linha].length - 1) {
+            moverParaBaixoEComeco(mat, linha);
+        } else { // se não, continuar percorrendo a proxima coluna e deixar a anterior vazia
+            mat[linha][coluna + 1] = mat[linha][coluna];
+            mat[linha][coluna] = null;
         }
     }
 
     public static int[] encontrar(Character[][] mat){
-        return new int[] {0,0};
+
+        int linha = 0;
+        int coluna = 0;
+
+        encontrouX: for ( ; linha < mat.length; linha++) {
+            for( ; coluna < mat[linha].length; coluna++) {
+                if(mat[linha][coluna] != null) {
+                    break encontrouX;
+                }
+            }
+        }
+        return new int[] {linha, coluna};
     }
 
-    private static void moverParaBaixoEComeco(Character[][] mat){
+    private static void moverParaBaixoEComeco(Character[][] mat, int linha){
+        int ultimaColunaDaMatriz = mat[linha].length - 1;
 
+        mat[linha][ultimaColunaDaMatriz] = null;
+        mat[linha+1][0] = 'X';
     }
 }
