@@ -1,11 +1,8 @@
 package Atividades;
 import java.util.Scanner;
-import java.util.Arrays;
-import java.util.ArrayList;
 
 
-
-public class Atividade2 {
+public class ListaDeFrutas {
 
     public static void main(String[] args) {
         //questão 1
@@ -14,9 +11,11 @@ public class Atividade2 {
          * Ao final da entrada dos 5 itens, exiba a lista completa.
          */
         //opção 1
-        String[] carrinhoFrutas = new String[5];
-        System.out.println("Escreva o nome de 5 frutas.");
+
         Scanner sc = new Scanner(System.in);
+        System.out.println("Escreva o nome de 5 frutas.");
+        String[] carrinhoFrutas = new String[5];
+
 
         for (int i = 0; i < carrinhoFrutas.length; i++) {
             System.out.printf("Fruta %d/5: ", i+1);
@@ -61,13 +60,6 @@ public class Atividade2 {
 //            System.out.printf("Posição %d- %s\n", j, fruta);
 //            j++;
 //        }
-
-        //questão 2
-        /**
-         * Escreva um programa que lê uma palavra e a escreve de volta ao contrário.
-         */
-        //opção 1
-
 
 
  }
