@@ -7,7 +7,7 @@ public class JogoDaVelha {
     public static void main(String[] args) {
 
         /**
-         * colocar dentro do while 
+         * colocar dentro do while - ok
          * saber a vez de cada jogador - ok
          * fazer joagada - ok
          * ver se a jogada é valida - ok
@@ -30,22 +30,35 @@ public class JogoDaVelha {
 
         Character[][] tab = new Character[3][3];
 
-
         Jogo jogo = new Jogo();
-        int linha;
-        int coluna;
+
 
         Scanner scanner = new Scanner(System.in);
-        linha = scanner.nextInt();
-        coluna = scanner.nextInt();
+
+        boolean continuarJogo = true;
+        int linha = 0;
+        int coluna = 0;
+
+        while(continuarJogo) {
+
+            imprimirTabuleiro(tab);
+            System.out.println("O jogador da vez é:" + jogo.getJogadorAtual());
+
+            System.out.println("Digite a linha:");
+            linha = scanner.nextInt();
+            System.out.println("Digite a coluna:");
+            coluna = scanner.nextInt();
+
+            if(fazerJogada(tab, linha, coluna, jogo.getJogadorAtual()) == true) {
+                jogo.mudarJogador();
+            } else {
+                System.out.println("Jogada inválida! Jogue novamente");
+            }
+        }
+
         boolean testeVerificarVazio = verificarPosicaoVazia(tab, linha, coluna);
 
-        imprimirTabuleiro(tab);
-        if(fazerJogada(tab, linha, coluna, jogo.getJogadorAtual()) == true) {
-            jogo.mudarJogador();
-        } else {
-            System.out.println("Jogada inválida! Jogue novamente");
-        }
+
         fazerJogada(tab, linha, coluna, jogo.getJogadorAtual());
         System.out.println(testeVerificarVazio);
         imprimirTabuleiro(tab);
