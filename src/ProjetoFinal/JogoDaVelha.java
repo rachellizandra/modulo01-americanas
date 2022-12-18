@@ -35,11 +35,13 @@ public class JogoDaVelha {
 
         Scanner scanner = new Scanner(System.in);
 
-        boolean continuarJogo = true;
+
         int linha = 0;
         int coluna = 0;
 
-        while(continuarJogo) {
+        int numeroJogadas = 0;
+
+        while(numeroJogadas < 10 && tabuleiroCompleto(tab, linha, coluna) == false) {
 
             imprimirTabuleiro(tab);
             System.out.println("O jogador da vez é:" + jogo.getJogadorAtual());
@@ -51,18 +53,19 @@ public class JogoDaVelha {
 
             if(fazerJogada(tab, linha, coluna, jogo.getJogadorAtual()) == true) {
                 jogo.mudarJogador();
+                numeroJogadas++;
+                System.out.println("Numero de jogadas: " + numeroJogadas);
             } else {
                 System.out.println("Jogada inválida! Jogue novamente");
             }
         }
 
-        boolean testeVerificarVazio = verificarPosicaoVazia(tab, linha, coluna);
+        //boolean testeVerificarVazio = verificarPosicaoVazia(tab, linha, coluna);
+        //boolean testeVerificarJogoCompleto = tabuleiroCompleto(tab, linha, coluna);
 
-
-        fazerJogada(tab, linha, coluna, jogo.getJogadorAtual());
-        System.out.println(testeVerificarVazio);
-        imprimirTabuleiro(tab);
-
+        //fazerJogada(tab, linha, coluna, jogo.getJogadorAtual());
+        //System.out.println(testeVerificarVazio);
+        //System.out.println(testeVerificarJogoCompleto);
 
     }
 
@@ -89,17 +92,6 @@ public class JogoDaVelha {
         }
     }
 
-    public static boolean verificarPosicaoVazia(Character[][] tab, int linha, int coluna) {
-
-            if(linha >= 0 && linha < 3) {
-                if(coluna >=0 && coluna < 3) {
-                    if(tab[linha][coluna] == null) {
-                        return true;
-                    }
-                }
-        }
-        return false;
-    }
 
     public static boolean fazerJogada(Character[][] tab, int linha, int coluna, Character jogadorAtual) {
         if(verificarPosicaoVazia(tab, linha, coluna) == true) {
@@ -108,7 +100,36 @@ public class JogoDaVelha {
         }
         return false;
     }
+
+    public static boolean verificarPosicaoVazia(Character[][] tab, int linha, int coluna) {
+
+        if(linha >= 0 && linha < 3) {
+            if(coluna >=0 && coluna < 3) {
+                if(tab[linha][coluna] == null) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static boolean tabuleiroCompleto(Character[][] tab, int linha, int coluna) {
+        int posicoesCompletas = 0;
+        for(linha=0 ; linha<3 ; linha++) {
+            for(coluna=0 ; coluna<3 ; coluna++) {
+                if(tab[linha][coluna] != null ) {
+                    posicoesCompletas++;
+                }
+            }
+        }
+        if(posicoesCompletas == 9) {
+            System.out.println("Tabuleiro completo");
+            return true;
+        }
+        return false;
+    }
 }
+
 
 class Jogo {
     char jogador1 = 'X';
@@ -116,7 +137,6 @@ class Jogo {
 
     Character jogadorAtual = jogador1;
 
-    // usar o jogador atual pelo scanner ("quem vai começar o jogo?")
     public void mudarJogador() {
         if(jogadorAtual == jogador1) {
             jogadorAtual = jogador2;
