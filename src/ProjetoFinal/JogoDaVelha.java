@@ -13,8 +13,8 @@ public class JogoDaVelha {
          * ver se a jogada é valida - ok
          * por posição exitente - ok
          * posição vazia - ok
-         * ver se o jogo acabou
-         * ver se deu velha
+         * ver se o jogo acabou - se ganhou
+         * ver se deu velha - ok
          *  ver se alguem ganhou
          *      ver na linhas
          *      ver nas colunas
@@ -32,6 +32,8 @@ public class JogoDaVelha {
 
         Jogo jogo = new Jogo();
 
+        Character jogadorAtual = jogo.getJogadorAtual();
+
 
         Scanner scanner = new Scanner(System.in);
 
@@ -41,20 +43,29 @@ public class JogoDaVelha {
 
         int numeroJogadas = 0;
 
-        while(numeroJogadas < 10 && tabuleiroCompleto(tab, linha, coluna) == false) {
+        while(numeroJogadas < 10) {
 
             imprimirTabuleiro(tab);
-            System.out.println("O jogador da vez é:" + jogo.getJogadorAtual());
+            System.out.println("O jogador da vez é:" + jogadorAtual);
 
             System.out.println("Digite a linha:");
             linha = scanner.nextInt();
             System.out.println("Digite a coluna:");
             coluna = scanner.nextInt();
 
-            if(fazerJogada(tab, linha, coluna, jogo.getJogadorAtual()) == true) {
-                jogo.mudarJogador();
+            if(fazerJogada(tab, linha, coluna, jogadorAtual) == true) {
+                if(checarLinhas(tab, jogadorAtual) == true || checarColunas(tab, jogadorAtual) == true) {
+                    System.out.printf("O jogador %c ganhou o jogo\n", jogadorAtual);
+                    break;
+                }
                 numeroJogadas++;
+                jogo.mudarJogador();
+                jogadorAtual = jogo.getJogadorAtual();
                 System.out.println("Numero de jogadas: " + numeroJogadas);
+                if(numeroJogadas == 9) {
+                    System.out.println("Tabuleiro completo.");
+                    break;
+                }
             } else {
                 System.out.println("Jogada inválida! Jogue novamente");
             }
@@ -67,7 +78,10 @@ public class JogoDaVelha {
         //System.out.println(testeVerificarVazio);
         //System.out.println(testeVerificarJogoCompleto);
 
+
+
     }
+
 
     public static void imprimirTabuleiro(Character[][] tab) {
         System.out.println();
@@ -123,12 +137,62 @@ public class JogoDaVelha {
             }
         }
         if(posicoesCompletas == 9) {
-            System.out.println("Tabuleiro completo");
+            System.out.println("Tabuleiro completo. Jogo empatado");
             return true;
         }
         return false;
     }
+
+    public static boolean checarLinhas(Character[][] tab, Character jogadorAtual){
+        int contDoSimbolo = 0;
+        for(int linha=0 ; linha<3 ; linha++) {
+            for(int coluna = 0; coluna < 3; coluna ++) {
+                if(tab[linha][coluna] != jogadorAtual) {
+                    contDoSimbolo = 0;
+                    break;
+                } else {
+                    contDoSimbolo++;
+                }
+            }
+            if(contDoSimbolo == 3) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean checarColunas(Character[][] tab, Character jogadorAtual){
+        int contDoSimbolo = 0;
+        for(int linha=0 ; linha<3 ; linha++) {
+            for(int coluna = 0; coluna < 3; coluna ++) {
+                if(tab[coluna][linha] != jogadorAtual) {
+                    contDoSimbolo = 0;
+                    break;
+                } else {
+                    contDoSimbolo++;
+                }
+            }
+            if(contDoSimbolo == 3) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean checaDiagonais(Character[][] tab){
+        if( (tab[0][0] + tab[1][1] + tab[2][2]) == -3)
+            return -1;
+        if( (tab[0][0] + tab[1][1] + tab[2][2]) == 3)
+            return 1;
+        if( (tab[0][2] + tab[1][1] + tab[2][0]) == -3)
+            return -1;
+        if( (tab[0][2] + tab[1][1] + tab[2][0]) == 3)
+            return 1;
+
+        return 0;
+    }
 }
+
 
 
 class Jogo {
@@ -136,6 +200,12 @@ class Jogo {
     char jogador2 = 'O';
 
     Character jogadorAtual = jogador1;
+
+    private JogoDaVelha tabuleiro;
+
+    public Jogo(){
+        tabuleiro = new JogoDaVelha();
+    }
 
     public void mudarJogador() {
         if(jogadorAtual == jogador1) {
@@ -148,5 +218,23 @@ class Jogo {
     public Character getJogadorAtual() {
         return jogadorAtual;
     }
+
+//    public int ganhou(){
+//        if(tabuleiro.checaLinhas() == 1)
+//            return 1;
+//        if(tabuleiro.checaColunas() == 1)
+//            return 1;
+//        if(tabuleiro.checaDiagonais() == 1)
+//            return 1;
+//
+//        if(tabuleiro.checaLinhas() == -1)
+//            return -1;
+//        if(tabuleiro.checaColunas() == -1)
+//            return -1;
+//        if(tabuleiro.checaDiagonais() == -1)
+//            return -1;
+//
+//        return 0;
+//    }
 
 }
